@@ -27,7 +27,9 @@ impl Day {
     fn mood(&self) {
         match self {
             Day::Monday => println!("Mondays are tough."),
+            Day::Wednesday => println!("Wednesdays are hump days."),
             Day::Friday => println!("Fridays are great!"),
+            Day::Sunday => println!("Sundays are relaxing."),
             _ => println!("Another day."),
         }
     }
@@ -44,7 +46,7 @@ fn main() {
     person.say_hello();
 
     // Create an instance of the enum
-    let today = Day::Monday;
+    let today = Day::Wednesday;
 
     // Call a method on the enum
     today.mood();

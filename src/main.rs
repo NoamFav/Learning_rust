@@ -9,6 +9,10 @@ impl Person {
     fn say_hello(&self) {
         println!("Hello, my name is {} and I am {} years old.", self.name, self.age);
     }
+
+    fn say_goodbye(&self) {
+        println!("Goodbye, {}!", self.name);
+    }
 }
 
 // Define an enum
@@ -50,4 +54,6 @@ fn main() {
 
     // Call a method on the enum
     today.mood();
+
+    person.say_goodbye();
 }

@@ -1,59 +1,49 @@
-// Define a struct
-struct Person {
-    name: String,
-    age: u8,
-}
+use std::env;
+use std::str::FromStr;
 
-// Implement methods for the struct
-impl Person {
-    fn say_hello(&self) {
-        println!("Hello, my name is {} and I am {} years old.", self.name, self.age);
-    }
+mod person_mood;
+mod guess;
 
-    fn say_goodbye(&self) {
-        println!("Goodbye, {}!", self.name);
-    }
-}
-
-// Define an enum
-enum Day {
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday,
-}
-
-// Implement methods for the enum
-impl Day {
-    fn mood(&self) {
-        match self {
-            Day::Monday => println!("Mondays are tough."),
-            Day::Wednesday => println!("Wednesdays are hump days."),
-            Day::Friday => println!("Fridays are great!"),
-            Day::Sunday => println!("Sundays are relaxing."),
-            _ => println!("Another day."),
+fn gcd(mut n: u64, mut m: u64) -> u64 {
+    assert!(n != 0 && m != 0);
+    while m != 0 {
+        if m < n {
+            let t = m;
+            m = n;
+            n = t;
         }
+        m = m % n;
     }
+    n
 }
 
 fn main() {
-    // Create an instance of the struct
-    let person = Person {
-        name: String::from("Alice"),
-        age: 30,
-    };
 
-    // Call a method on the struct
-    person.say_hello();
+    person_mood::main();
+    guess::guess();
 
-    // Create an instance of the enum
-    let today = Day::Wednesday;
+    let mut numbers : Vec<u64> = Vec::new();
 
-    // Call a method on the enum
-    today.mood();
+    for arg in env::args().skip(1) {
+        numbers.push(u64::from_str(&arg)
+            .expect("error parsing argument!"));
+    }
 
-    person.say_goodbye();
+    if numbers.len() == 0 {
+        eprintln!("Usage: gcd NUMBER...");
+        std::process::exit(1);
+    }
+
+    let mut d : u64 = numbers[0];
+    for m in &numbers[1..] {
+        d = gcd(d, *m);
+    }
+
+    println!("The greatest common divisor of {:?} is {}", numbers, d);
+}
+
+#[test]
+fn test_gcd() {
+    assert_eq!(gcd(14, 15), 1);
+    assert_eq!(gcd(14, 28), 14);
 }
